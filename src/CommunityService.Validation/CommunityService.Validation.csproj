@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="$(ProjectDir)..\..\Common.Configurations.targets" />
+
+  <ItemGroup>
+    <ProjectReference Include="..\CommunityService.Broker\CommunityService.Broker.csproj" />
+    <ProjectReference Include="..\CommunityService.Data\CommunityService.Data.csproj" />
+    <ProjectReference Include="..\CommunityService.Models.Dto\CommunityService.Models.Dto.csproj" />
+  </ItemGroup>
+
+</Project>

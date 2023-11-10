@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="$(ProjectDir)..\..\Common.Configurations.targets" />
+
+  <ItemGroup>
+    <ProjectReference Include="..\CommunityService.Data\CommunityService.Data.csproj" />
+    <ProjectReference Include="..\CommunityService.Mappers\CommunityService.Mappers.csproj" />
+    <ProjectReference Include="..\CommunityService.Models.Db\CommunityService.Models.Db.csproj" />
+    <ProjectReference Include="..\CommunityService.Models.Dto\CommunityService.Models.Dto.csproj" />
+    <ProjectReference Include="..\CommunityService.Validation\CommunityService.Validation.csproj" />
+  </ItemGroup>
+
+</Project>

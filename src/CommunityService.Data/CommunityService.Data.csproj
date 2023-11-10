@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="$(ProjectDir)..\..\Common.Configurations.targets" />
+
+  <ItemGroup>
+    <ProjectReference Include="..\CommunityService.Data.Provider.MsSql.Ef\CommunityService.Data.Provider.MsSql.Ef.csproj" />
+    <ProjectReference Include="..\CommunityService.Data.Provider\CommunityService.Data.Provider.csproj" />
+    <ProjectReference Include="..\CommunityService.Mappers\CommunityService.Mappers.csproj" />
+    <ProjectReference Include="..\CommunityService.Models.Db\CommunityService.Models.Db.csproj" />
+    <ProjectReference Include="..\CommunityService.Models.Dto\CommunityService.Models.Dto.csproj" />
+  </ItemGroup>
+
+</Project>
