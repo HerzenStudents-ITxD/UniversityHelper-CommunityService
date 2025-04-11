@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:7.0-bullseye-slim AS build
+FROM mcr.microsoft.com/dotnet/sdk:9.0-bullseye-slim AS build
 WORKDIR /app
 
 COPY . ./
@@ -9,7 +9,7 @@ RUN dotnet dev-certs https
 #RUN dotnet dev-certs https --trust
 RUN dotnet publish -c Release -o out
 
-FROM mcr.microsoft.com/dotnet/aspnet:7.0-bullseye-slim AS base
+FROM mcr.microsoft.com/dotnet/aspnet:9.0-bullseye-slim AS base
 WORKDIR /app
 COPY --from=build /app/out .
 EXPOSE 80
