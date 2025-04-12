@@ -24,6 +24,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 
 namespace UniversityHelper.CommunityService;
 
@@ -72,11 +73,11 @@ public class Startup : BaseApiInfo
           });
     });
 
-    services.Configure<TokenConfiguration>(Configuration.GetSection("CheckTokenMiddleware"));
+    //services.Configure<TokenConfiguration>(Configuration.GetSection("CheckTokenMiddleware"));
     services.Configure<BaseRabbitMqConfig>(Configuration.GetSection(BaseRabbitMqConfig.SectionName));
     services.Configure<BaseServiceInfoConfig>(Configuration.GetSection(BaseServiceInfoConfig.SectionName));
 
-    services.AddHttpContextAccessor();
+    //services.AddHttpContextAccessor();
     services.AddMemoryCache();
     services.AddControllers()
       .AddJsonOptions(options =>
@@ -128,9 +129,21 @@ public class Startup : BaseApiInfo
       .AddHealthChecks()
       .AddSqlServer(dbConnectionString)
       .AddRabbitMqCheck();
-  }
 
-  public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
+    services.AddSwaggerGen(options =>
+     {
+        options.SwaggerDoc($"{Version}", new OpenApiInfo
+        {
+            Version = Version,
+            Title = _serviceInfoConfig.Name,
+            Description = Description
+        });
+
+        options.EnableAnnotations();
+     });
+    }
+
+    public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
   {
     app.UpdateDatabase<CommunityServiceDbContext>();
 
@@ -164,5 +177,10 @@ public class Startup : BaseApiInfo
         ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
       });
     });
-  }
+        app.UseSwagger()
+          .UseSwaggerUI(options =>
+          {
+              options.SwaggerEndpoint($"/swagger/{Version}/swagger.json", $"{Version}");
+          });
+    }
 }

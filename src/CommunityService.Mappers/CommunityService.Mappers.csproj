@@ -7,4 +7,9 @@
     <ProjectReference Include="..\CommunityService.Models.Dto\CommunityService.Models.Dto.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\" />
+    <Folder Include="Responses\" />
+  </ItemGroup>
+
 </Project>
