@@ -25,6 +25,8 @@ public class DbNews
     public ICollection<DbParticipating> Participatings { get; set; }
     [IgnoreParse]
     public ICollection<DbNewsPhoto> Photos { get; set; }
+    public Guid CommunityId { get; set; }
+    public DbCommunity Community { get; set; }
     public DbNews()
     {
         Participatings = new HashSet<DbParticipating>();
@@ -48,6 +50,8 @@ public class DbNewsConfiguration : IEntityTypeConfiguration<DbNews>
         builder
             .HasMany(n => n.Photos)
             .WithOne(p => p.News);
-
+        builder
+            .HasOne(n => n.Community)
+            .WithMany(c => c.News);
     }
 }

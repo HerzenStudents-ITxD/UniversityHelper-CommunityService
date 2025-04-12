@@ -15,7 +15,7 @@ public class DbCommunity
 
     public Guid Id { get; set; }
     public string Name { get; set; }
-    public Guid AvatarId { get; set; }
+    public string Avatar { get; set; }
     public string Text { get; set; }
 
     public Guid AuthorId { get; set; }
@@ -23,9 +23,15 @@ public class DbCommunity
 
     [IgnoreParse]
     public ICollection<DbCommunityAgent> Agents { get; set; }
+    [IgnoreParse]
+    public ICollection<DbCommunityHidden> Hidden { get; set; }
+    [IgnoreParse]
+    public ICollection<DbNews> News { get; set; }
     public DbCommunity()
     {
         Agents = new HashSet<DbCommunityAgent>();
+        Hidden = new HashSet<DbCommunityHidden>();
+        News = new HashSet<DbNews>();
     }
 }
 
@@ -42,6 +48,12 @@ public class DbCommunityConfiguration : IEntityTypeConfiguration<DbCommunity>
         builder
             .HasMany(c => c.Agents)
             .WithOne(a => a.Community);
+        builder
+            .HasMany(c => c.Hidden)
+            .WithOne(v=>v.Community);
+        builder
+            .HasMany(c => c.News)
+            .WithOne(n => n.Community);
 
     }
 }

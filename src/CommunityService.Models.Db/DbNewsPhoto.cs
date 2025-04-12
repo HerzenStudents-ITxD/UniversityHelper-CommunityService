@@ -11,7 +11,7 @@ public class DbNewsPhoto
 {
     public const string TableName = "NewsPhoto";
     public Guid Id { get; set; }
-    public Guid PhotoId { get; set; }
+    public string Photo { get; set; }
     public Guid NewsId { get; set; }
     public DbNews News { get; set; }
     public DbNewsPhoto()
