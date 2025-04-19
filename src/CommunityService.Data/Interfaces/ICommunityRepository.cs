@@ -1,16 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using UniversityHelper.CommunityService.Models.Db;
+using System.Threading;
 using System.Threading.Tasks;
-using UniversityHelper.CommunityService.Models.Db;
 using UniversityHelper.Core.Attributes;
 
 namespace UniversityHelper.CommunityService.Data.Interfaces;
 [AutoInject]
 public interface ICommunityRepository
 {
-    Task <List<(DbCommunity community, List<DbCommunityAgent>)>>GetAllWithAgentsAsync();
     Task CreateAsync(DbCommunity community);
-    Task<bool> AddAgentAsync(Guid communityId, Guid agentId);
+    Task<(List<DbCommunity> communities, int totalCount)> FindAsync(
+      Guid? userId,
+      bool includeAgents,
+      bool includeAvatars,
+      CancellationToken cancellationToken);
+    Task<DbCommunity> GetAsync(Guid communityId, CancellationToken cancellationToken);
+    Task<bool> UpdateAsync(DbCommunity community);
+    Task<bool> SoftDeleteAsync(Guid communityId);
 }

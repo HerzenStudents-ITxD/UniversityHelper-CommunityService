@@ -1,21 +1,29 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using UniversityHelper.CommunityService.Mappers.Db.Interfaces;
 using UniversityHelper.CommunityService.Models.Db;
-using UniversityHelper.CommunityService.Models.Dto.Models;
-//using UniversityHelper.CommunityService.Models.Dto.Responses.Community;
+using UniversityHelper.CommunityService.Models.Dto.Requests.Community;
+using Microsoft.AspNetCore.Http;
 
 namespace UniversityHelper.CommunityService.Mappers.Db;
 
-public static class DbCommunityMapper
+public class DbCommunityMapper : IDbCommunityMapper
 {
-    public static CommunityAdminInfo Map(DbCommunity dbCommunity, List<DbCommunityAgent> dbAgents)
+    private readonly IHttpContextAccessor _httpContextAccessor;
+
+    public DbCommunityMapper(IHttpContextAccessor httpContextAccessor)
     {
-        return new CommunityAdminInfo
+        _httpContextAccessor = httpContextAccessor;
+    }
+
+    public DbCommunity Map(CreateCommunityRequest request)
+    {
+        var userId = _httpContextAccessor.HttpContext?.User?.FindFirst("sub")?.Value ?? Guid.Empty.ToString();
+        return new DbCommunity
         {
-            Id = dbCommunity.Id,
-            Name = dbCommunity.Name,
-            Avatar = dbCommunity.Avatar,
-            Agents = dbAgents.Select(a => new CommunityAgentInfo { Id = a.Id, AgentId = a.AgentId, CommunityId = a.CommunityId }).ToList()
+            Id = Guid.NewGuid(),
+            Name = request.Name,
+            Avatar = request.AvatarImage ?? string.Empty,
+            CreatedBy = Guid.Parse(userId),
+            CreatedAtUtc = DateTime.UtcNow
         };
     }
 }

@@ -1,60 +1,66 @@
 ﻿using FluentValidation.Results;
-using StackExchange.Redis;
-using System.Net;
-using System.Threading.Tasks;
+using UniversityHelper.Core.Helpers.Interfaces;
+using UniversityHelper.Core.RedisSupport.Helpers.Interfaces;
+using UniversityHelper.Core.Responses;
+
 using UniversityHelper.CommunityService.Business.Commands.Community.Interfaces;
 using UniversityHelper.CommunityService.Data.Interfaces;
-using UniversityHelper.CommunityService.Models.Db;
+using UniversityHelper.CommunityService.Mappers.Db.Interfaces;
 using UniversityHelper.CommunityService.Models.Dto.Requests.Community;
-using UniversityHelper.CommunityService.Validation.Community;
-using UniversityHelper.CommunityService.Validation.Interfaces;
-using UniversityHelper.Core.BrokerSupport.AccessValidatorEngine;
-using UniversityHelper.Core.BrokerSupport.AccessValidatorEngine.Interfaces;
-using UniversityHelper.Core.Helpers.Interfaces;
-using UniversityHelper.Core.Responses;
+using UniversityHelper.CommunityService.Validation.Community.Interfaces;
+using Microsoft.AspNetCore.Http;
+using System.Net;
 
 namespace UniversityHelper.CommunityService.Business.Commands.Community;
 
 public class CreateCommunityCommand : ICreateCommunityCommand
 {
-    private readonly ICreateCommunityValidator _validator;
-    private readonly IAccessValidator _accessValidator;
     private readonly ICommunityRepository _communityRepository;
+    private readonly ICommunityAvatarRepository _avatarRepository;
+    private readonly ICreateCommunityRequestValidator _requestValidator;
+    private readonly IDbCommunityMapper _dbCommunityMapper;
+    private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IResponseCreator _responseCreator;
+    private readonly IGlobalCacheRepository _globalCache;
 
     public CreateCommunityCommand(
-        ICommunityRepository communityRepository,
-        ICreateCommunityValidator validator,
-        IAccessValidator accessValidator,
-        IResponseCreator responseCreator)
+      ICommunityRepository communityRepository,
+      ICommunityAvatarRepository avatarRepository,
+      ICreateCommunityRequestValidator requestValidator,
+      IDbCommunityMapper dbCommunityMapper,
+      IHttpContextAccessor httpContextAccessor,
+      IResponseCreator responseCreator,
+      IGlobalCacheRepository globalCache)
     {
-        _validator = validator;
-        _accessValidator = accessValidator;
         _communityRepository = communityRepository;
+        _avatarRepository = avatarRepository;
+        _requestValidator = requestValidator;
+        _dbCommunityMapper = dbCommunityMapper;
+        _httpContextAccessor = httpContextAccessor;
         _responseCreator = responseCreator;
+        _globalCache = globalCache;
     }
 
     public async Task<OperationResultResponse<Guid>> ExecuteAsync(CreateCommunityRequest request)
     {
-        //if (!await _accessValidator.IsAdminAsync())
-        //{
-        //    return _responseCreator.CreateFailureResponse<Guid>(HttpStatusCode.Forbidden);
-        //}
-        ValidationResult validationResult = await _validator.ValidateAsync(request);
+        ValidationResult validationResult = await _requestValidator.ValidateAsync(request);
+
         if (!validationResult.IsValid)
         {
             return _responseCreator.CreateFailureResponse<Guid>(
               HttpStatusCode.BadRequest,
-              validationResult.Errors.Select(validationFailure => validationFailure.ErrorMessage).ToList());
+              validationResult.Errors.Select(v => v.ErrorMessage).ToList());
         }
-        var community = new DbCommunity
-        {
-            Id = Guid.NewGuid(),
-            Name = request.Name,
-            Avatar = request.Avatar
-        };
 
+        var community = _dbCommunityMapper.Map(request);
         await _communityRepository.CreateAsync(community);
-        return new OperationResultResponse<Guid>(body: community.Id);
+
+        OperationResultResponse<Guid> response = new() { Body = community.Id };
+
+
+        _httpContextAccessor.HttpContext.Response.StatusCode = (int)HttpStatusCode.Created;
+        await _globalCache.RemoveAsync(community.Id);
+
+        return response;
     }
 }

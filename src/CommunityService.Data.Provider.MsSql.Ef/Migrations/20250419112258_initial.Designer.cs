@@ -12,8 +12,8 @@ using UniversityHelper.CommunityService.Data.Provider.MsSql.Ef;
 namespace UniversityHelper.CommunityService.Data.Provider.MsSql.Ef.Migrations
 {
     [DbContext(typeof(CommunityServiceDbContext))]
-    [Migration("20250412224541_RemoveLishniePolya")]
-    partial class RemoveLishniePolya
+    [Migration("20250419112258_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,6 +34,18 @@ namespace UniversityHelper.CommunityService.Data.Provider.MsSql.Ef.Migrations
                     b.Property<string>("Avatar")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ModifiedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
