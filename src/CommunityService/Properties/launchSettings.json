@@ -3,7 +3,7 @@
     "CommunityService": {
       "commandName": "Project",
       "launchUrl": "swagger",
-      "applicationUrl": "http://localhost:9812",
+      "applicationUrl": "http://localhost:9813",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "RabbitMqUsername": "guest",
