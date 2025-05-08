@@ -12,21 +12,17 @@ public class GetAllCommunitiesCommand : IGetAllCommunitiesCommand
 {
     private readonly ICommunityRepository _communityRepository;
     private readonly ICommunityResponseMapper _mapper;
-    private readonly IHttpContextAccessor _httpContextAccessor;
 
     public GetAllCommunitiesCommand(
       ICommunityRepository communityRepository,
-      ICommunityResponseMapper mapper,
-      IHttpContextAccessor httpContextAccessor)
+      ICommunityResponseMapper mapper)
     {
         _communityRepository = communityRepository;
         _mapper = mapper;
-        _httpContextAccessor = httpContextAccessor;
     }
 
     public async Task<FindResultResponse<CommunityResponse>> ExecuteAsync(CancellationToken cancellationToken)
     {
-        var userId = _httpContextAccessor.HttpContext.GetUserId();
         var (communities, totalCount) = await _communityRepository.FindAsync(
           null, true, true, cancellationToken);
 

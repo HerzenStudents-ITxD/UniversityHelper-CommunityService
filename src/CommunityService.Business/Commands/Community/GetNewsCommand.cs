@@ -17,24 +17,20 @@ public class GetNewsCommand : IGetNewsCommand
     private readonly ICommunityNewsRepository _newsRepository;
     private readonly ICommunityNewsPhotoRepository _imageRepository;
     private readonly INewsResponseMapper _mapper;
-    private readonly IHttpContextAccessor _httpContextAccessor;
 
     public GetNewsCommand(
         ICommunityNewsRepository newsRepository,
         ICommunityNewsPhotoRepository imageRepository,
-        INewsResponseMapper mapper,
-        IHttpContextAccessor httpContextAccessor)
+        INewsResponseMapper mapper)
     {
         _newsRepository = newsRepository;
         _imageRepository = imageRepository;
         _mapper = mapper;
-        _httpContextAccessor = httpContextAccessor;
     }
 
     public async Task<FindResultResponse<NewsResponse>> ExecuteAsync(int page, int pageSize, CancellationToken cancellationToken)
     {
-        var userId = _httpContextAccessor.HttpContext.GetUserId();
-        var (news, totalCount) = await _newsRepository.FindAsync(userId, page, pageSize, cancellationToken);
+        var (news, totalCount) = await _newsRepository.FindAsync(page, pageSize, cancellationToken);
 
         var response = new FindResultResponse<NewsResponse>
         {

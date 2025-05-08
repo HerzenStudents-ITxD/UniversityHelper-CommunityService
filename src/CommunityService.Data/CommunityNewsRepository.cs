@@ -26,7 +26,7 @@ public class CommunityNewsRepository : ICommunityNewsRepository
     }
 
     public async Task<(List<DbNews> news, int totalCount)> FindAsync(
-        Guid userId, int page, int pageSize, CancellationToken cancellationToken)
+        int page, int pageSize, CancellationToken cancellationToken)
     {
         var query = _provider.News
             .Include(n => n.Photos)
