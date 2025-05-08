@@ -16,16 +16,13 @@ public class GetNewsCommand : IGetNewsCommand
 {
     private readonly ICommunityNewsRepository _newsRepository;
     private readonly ICommunityNewsPhotoRepository _imageRepository;
-    private readonly INewsResponseMapper _mapper;
 
     public GetNewsCommand(
         ICommunityNewsRepository newsRepository,
-        ICommunityNewsPhotoRepository imageRepository,
-        INewsResponseMapper mapper)
+        ICommunityNewsPhotoRepository imageRepository)
     {
         _newsRepository = newsRepository;
         _imageRepository = imageRepository;
-        _mapper = mapper;
     }
 
     public async Task<FindResultResponse<NewsResponse>> ExecuteAsync(int page, int pageSize, CancellationToken cancellationToken)
