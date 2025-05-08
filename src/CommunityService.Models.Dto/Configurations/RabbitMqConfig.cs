@@ -13,11 +13,9 @@ public class RabbitMqConfig : BaseRabbitMqConfig
   //public string ActivateUserRoleEndpoint { get; set; }
   //public string FilterRolesEndpoint { get; set; }
 
-  //// users
+  [AutoInjectRequest(typeof(IGetUsersDataRequest))]
+  public string GetUsersDataEndpoint { get; set; }
 
-  //[AutoInjectRequest(typeof(IGetUsersDataRequest))]
-  //public string GetUsersDataEndpoint { get; set; }
-
-  //[AutoInjectRequest(typeof(ICheckUsersExistence))]
-  //public string CheckUsersExistenceEndpoint { get; set; }
+  [AutoInjectRequest(typeof(ICheckUsersExistence))]
+  public string CheckUsersExistenceEndpoint { get; set; }
 }
