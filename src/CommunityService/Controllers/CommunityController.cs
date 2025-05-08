@@ -14,6 +14,7 @@ namespace UniversityHelper.CommunityService.Controllers;
 public class CommunityController : ControllerBase
 {
     [HttpGet("all")]
+    [ProducesResponseType(typeof(FindResultResponse<CommunityResponse>), StatusCodes.Status200OK)]
     public async Task<FindResultResponse<CommunityResponse>> GetAllCommunitiesAsync(
         [FromServices] IGetAllCommunitiesCommand command,
         [FromQuery] CancellationToken cancellationToken)
@@ -22,6 +23,7 @@ public class CommunityController : ControllerBase
     }
 
     [HttpGet("user")]
+    [ProducesResponseType(typeof(FindResultResponse<CommunityResponse>), StatusCodes.Status200OK)]
     public async Task<FindResultResponse<CommunityResponse>> GetUserCommunitiesAsync(
         [FromServices] IGetUserCommunitiesCommand command,
         [FromQuery] CancellationToken cancellationToken)
@@ -30,6 +32,8 @@ public class CommunityController : ControllerBase
     }
 
     [HttpPost("create")]
+    [ProducesResponseType(typeof(OperationResultResponse<Guid>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<OperationResultResponse<Guid>> CreateCommunityAsync(
         [FromServices] ICreateCommunityCommand command,
         [FromBody] CreateCommunityRequest request)
@@ -38,6 +42,8 @@ public class CommunityController : ControllerBase
     }
 
     [HttpPatch("edit")]
+    [ProducesResponseType(typeof(OperationResultResponse<bool>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<OperationResultResponse<bool>> EditCommunityAsync(
         [FromServices] IEditCommunityCommand command,
         [FromQuery] Guid communityId,
@@ -47,6 +53,8 @@ public class CommunityController : ControllerBase
     }
 
     [HttpDelete("softdelete")]
+    [ProducesResponseType(typeof(OperationResultResponse<bool>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<OperationResultResponse<bool>> SoftDeleteCommunityAsync(
         [FromServices] ISoftDeleteCommunityCommand command,
         [FromQuery] Guid communityId)
@@ -55,6 +63,8 @@ public class CommunityController : ControllerBase
     }
 
     [HttpPost("add-agent")]
+    [ProducesResponseType(typeof(OperationResultResponse<bool>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<OperationResultResponse<bool>> AddAgentAsync(
         [FromServices] IAddAgentCommand command,
         [FromBody] AddAgentRequest request)
@@ -63,6 +73,8 @@ public class CommunityController : ControllerBase
     }
 
     [HttpDelete("remove-agent")]
+    [ProducesResponseType(typeof(OperationResultResponse<bool>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<OperationResultResponse<bool>> RemoveAgentAsync(
         [FromServices] IRemoveAgentCommand command,
         [FromQuery] Guid communityId,
@@ -72,6 +84,7 @@ public class CommunityController : ControllerBase
     }
 
     [HttpGet("news")]
+    [ProducesResponseType(typeof(FindResultResponse<NewsResponse>), StatusCodes.Status200OK)]
     public async Task<FindResultResponse<NewsResponse>> GetNewsAsync(
         [FromServices] IGetNewsCommand command,
         [FromQuery] int page,
@@ -82,6 +95,7 @@ public class CommunityController : ControllerBase
     }
 
     [HttpGet("community-news")]
+    [ProducesResponseType(typeof(FindResultResponse<NewsResponse>), StatusCodes.Status200OK)]
     public async Task<FindResultResponse<NewsResponse>> GetCommunityNewsAsync(
         [FromServices] IGetNewsCommand command,
         [FromQuery] Guid communityId,
@@ -93,6 +107,8 @@ public class CommunityController : ControllerBase
     }
 
     [HttpPost("hide")]
+    [ProducesResponseType(typeof(OperationResultResponse<bool>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<OperationResultResponse<bool>> HideCommunityAsync(
         [FromServices] IHideCommunityCommand command,
         [FromQuery] Guid communityId)
@@ -101,6 +117,8 @@ public class CommunityController : ControllerBase
     }
 
     [HttpPost("unhide")]
+    [ProducesResponseType(typeof(OperationResultResponse<bool>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<OperationResultResponse<bool>> UnhideCommunityAsync(
         [FromServices] IUnhideCommunityCommand command,
         [FromQuery] Guid communityId)
@@ -109,6 +127,8 @@ public class CommunityController : ControllerBase
     }
 
     [HttpPost("participate")]
+    [ProducesResponseType(typeof(OperationResultResponse<bool>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<OperationResultResponse<bool>> ParticipateAsync(
         [FromServices] IParticipateCommand command,
         [FromBody] ParticipateRequest request)
@@ -117,6 +137,8 @@ public class CommunityController : ControllerBase
     }
 
     [HttpPost("unparticipate")]
+    [ProducesResponseType(typeof(OperationResultResponse<bool>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<OperationResultResponse<bool>> UnparticipateAsync(
         [FromServices] IUnparticipateCommand command,
         [FromBody] ParticipateRequest request)
@@ -125,6 +147,8 @@ public class CommunityController : ControllerBase
     }
 
     [HttpPost("create-news")]
+    [ProducesResponseType(typeof(OperationResultResponse<Guid>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<OperationResultResponse<Guid>> CreateNewsAsync(
         [FromServices] ICreateNewsCommand command,
         [FromBody] CreateNewsRequest request)
