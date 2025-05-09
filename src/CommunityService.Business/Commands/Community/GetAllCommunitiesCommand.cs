@@ -25,11 +25,15 @@ public class GetAllCommunitiesCommand : IGetAllCommunitiesCommand
     {
         var (communities, totalCount) = await _communityRepository.FindAsync(
           null, true, true, cancellationToken);
+        
 
         var response = new FindResultResponse<CommunityResponse>
         {
             TotalCount = totalCount,
-            Body = new List<CommunityResponse>()
+            Body = communities.Select(x=> {
+                var images = new List<string>() { x.Avatar };
+                return _mapper.Map(x, images);
+                }).ToList()
         };
 
 
