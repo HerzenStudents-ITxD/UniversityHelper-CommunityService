@@ -16,13 +16,16 @@ public class GetNewsCommand : IGetNewsCommand
 {
     private readonly ICommunityNewsRepository _newsRepository;
     private readonly ICommunityNewsPhotoRepository _imageRepository;
+    private readonly INewsResponseMapper _mapper;
 
     public GetNewsCommand(
         ICommunityNewsRepository newsRepository,
-        ICommunityNewsPhotoRepository imageRepository)
+        ICommunityNewsPhotoRepository imageRepository,
+        INewsResponseMapper mapper)
     {
         _newsRepository = newsRepository;
         _imageRepository = imageRepository;
+        _mapper = mapper;
     }
 
     public async Task<FindResultResponse<NewsResponse>> ExecuteAsync(int page, int pageSize, CancellationToken cancellationToken)
@@ -32,8 +35,11 @@ public class GetNewsCommand : IGetNewsCommand
         var response = new FindResultResponse<NewsResponse>
         {
             TotalCount = totalCount,
-            Body = new List<NewsResponse>()
-        };
+            Body = news.Select(x => {
+                var images = x.Photos.Select(x=>x.Photo).ToList();
+                return _mapper.Map(x, images);
+            }).ToList()
+    };
 
 
         return response;
