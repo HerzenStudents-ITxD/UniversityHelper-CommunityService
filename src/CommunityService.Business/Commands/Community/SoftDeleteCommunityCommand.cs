@@ -31,7 +31,13 @@ public class SoftDeleteCommunityCommand : ISoftDeleteCommunityCommand
     public async Task<OperationResultResponse<bool>> ExecuteAsync(Guid communityId)
     {
         var userId = _httpContextAccessor.HttpContext.GetUserId();
-        // Assuming admin check is done via broker or middleware
+
+        var currentUserId = _httpContextAccessor.HttpContext.GetUserId();
+        if (!await _accessValidator.IsAdminAsync())
+        {
+            return _responseCreator.CreateFailureResponse<bool>(HttpStatusCode.Forbidden, new List<string> { "User is not moderator or admin." });
+        }
+
         var success = await _communityRepository.SoftDeleteAsync(communityId);
 
         if (success)

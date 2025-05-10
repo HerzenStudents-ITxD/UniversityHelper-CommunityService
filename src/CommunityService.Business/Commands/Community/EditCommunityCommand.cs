@@ -36,7 +36,7 @@ public class EditCommunityCommand : IEditCommunityCommand
     public async Task<OperationResultResponse<bool>> ExecuteAsync(Guid communityId, JsonPatchDocument<EditCommunityRequest> request)
     {
         var userId = _httpContextAccessor.HttpContext.GetUserId();
-        if (!await _agentRepository.IsModeratorAsync(userId, communityId) && !await _agentRepository.IsAgentAsync(userId, communityId))
+        if (!await _accessValidator.IsAdminAsync() && !await _agentRepository.IsAgentAsync(userId, communityId))
         {
             return _responseCreator.CreateFailureResponse<bool>(HttpStatusCode.Forbidden);
         }

@@ -55,9 +55,9 @@ public class CreateNewsCommand : ICreateNewsCommand
         }
 
         var userId = _httpContextAccessor.HttpContext.GetUserId();
-        if (!await _agentRepository.IsModeratorAsync(userId, request.CommunityId))
+        if (!await _accessValidator.IsAdminAsync() && !await _agentRepository.IsAgentAsync(userId, request.CommunityId))
         {
-            return _responseCreator.CreateFailureResponse<Guid>(HttpStatusCode.Forbidden, new List<string> { "Пользователь не является модератором." });
+            return _responseCreator.CreateFailureResponse<Guid>(HttpStatusCode.Forbidden, new List<string> { "User is not a agent or admin." });
         }
 
         var news = _dbNewsMapper.Map(request, userId);

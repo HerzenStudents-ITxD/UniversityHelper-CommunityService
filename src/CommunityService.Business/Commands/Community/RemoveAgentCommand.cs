@@ -34,9 +34,9 @@ public class RemoveAgentCommand : IRemoveAgentCommand
     public async Task<OperationResultResponse<bool>> ExecuteAsync(Guid communityId, Guid userId)
     {
         var currentUserId = _httpContextAccessor.HttpContext.GetUserId();
-        if (!await _agentRepository.IsModeratorAsync(currentUserId, communityId))
+        if (!await _accessValidator.IsAdminAsync() && !await _agentRepository.IsAgentAsync(currentUserId, communityId))
         {
-            return _responseCreator.CreateFailureResponse<bool>(HttpStatusCode.Forbidden, new List<string> { "User is not a moderator." });
+            return _responseCreator.CreateFailureResponse<bool>(HttpStatusCode.Forbidden, new List<string> { "User is not moderator or admin." });
         }
 
         var community = await _communityRepository.GetAsync(communityId, CancellationToken.None);

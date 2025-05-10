@@ -36,7 +36,7 @@ public class AddAgentCommand : IAddAgentCommand
     public async Task<OperationResultResponse<bool>> ExecuteAsync(AddAgentRequest request)
     {
         var userId = _httpContextAccessor.HttpContext.GetUserId();
-        if (!await _agentRepository.IsModeratorAsync(userId, request.CommunityId))
+        if (!await _agentRepository.IsAgentAsync(userId, request.CommunityId) && !await _accessValidator.IsAdminAsync())
         {
             return _responseCreator.CreateFailureResponse<bool>(HttpStatusCode.Forbidden, new List<string> { "User is not a moderator." });
         }

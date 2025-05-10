@@ -52,6 +52,12 @@ public class CreateCommunityCommand : ICreateCommunityCommand
               validationResult.Errors.Select(v => v.ErrorMessage).ToList());
         }
 
+        var userId = _httpContextAccessor.HttpContext.GetUserId();
+        if (!await _accessValidator.IsAdminAsync())
+        {
+            return _responseCreator.CreateFailureResponse<Guid>(HttpStatusCode.Forbidden, new List<string> { "User is not a admin." });
+        }
+
         var community = _dbCommunityMapper.Map(request);
         await _communityRepository.CreateAsync(community);
 
