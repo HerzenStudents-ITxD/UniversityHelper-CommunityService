@@ -54,11 +54,11 @@ public class CreateNewsCommand : ICreateNewsCommand
               validationResult.Errors.Select(v => v.ErrorMessage).ToList());
         }
 
-        var userId = Guid.NewGuid();
-        //if (!await _agentRepository.IsModeratorAsync(userId, request.CommunityId))
-        //{
-        //    return _responseCreator.CreateFailureResponse<Guid>(HttpStatusCode.Forbidden, new List<string> { "Пользователь не является модератором." });
-        //}
+        var userId = _httpContextAccessor.HttpContext.GetUserId();
+        if (!await _agentRepository.IsModeratorAsync(userId, request.CommunityId))
+        {
+            return _responseCreator.CreateFailureResponse<Guid>(HttpStatusCode.Forbidden, new List<string> { "Пользователь не является модератором." });
+        }
 
         var news = _dbNewsMapper.Map(request, userId);
         await _newsRepository.CreateAsync(news);
