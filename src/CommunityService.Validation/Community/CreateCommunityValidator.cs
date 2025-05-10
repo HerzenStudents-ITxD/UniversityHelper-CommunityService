@@ -12,7 +12,7 @@ public class CreateCommunityRequestValidator : AbstractValidator<CreateCommunity
             .NotEmpty().WithMessage("Community name is required.")
             .MaximumLength(100).WithMessage("Community name is too long.");
 
-        RuleFor(x => x.AvatarImage)
-            .NotNull().When(x => x.AvatarImage != null).WithMessage("Avatar image is invalid.");
+        // Убрали валидацию для AvatarImage, так как оно теперь необязательное
+        // Text также необязательное, поэтому валидация не требуется
     }
 }

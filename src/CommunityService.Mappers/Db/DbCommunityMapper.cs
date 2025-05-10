@@ -21,7 +21,8 @@ public class DbCommunityMapper : IDbCommunityMapper
         {
             Id = Guid.NewGuid(),
             Name = request.Name,
-            Avatar = request.AvatarImage ?? string.Empty,
+            Avatar = request.AvatarImage, // Может быть null
+            Text = request.Text, // Новое поле, может быть null
             CreatedBy = Guid.Parse(userId),
             CreatedAtUtc = DateTime.UtcNow
         };

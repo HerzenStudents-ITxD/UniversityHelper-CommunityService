@@ -16,7 +16,8 @@ public class NewsResponseMapper : INewsResponseMapper
             Title = news.Title,
             Text = news.Text,
             Photos = photos,
-            Participants = news.Participatings?.Select(p => p.UserId).ToList() ?? new List<Guid>()
+            Participants = news.Participatings?.Select(p => p.UserId).ToList() ?? new List<Guid>(),
+            PointId = news.PointId // Добавлено маппинг для PointId
         };
     }
 }

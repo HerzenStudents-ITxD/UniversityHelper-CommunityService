@@ -29,7 +29,6 @@ namespace UniversityHelper.CommunityService.Data.Provider.MsSql.Ef.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Avatar")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAtUtc")
@@ -46,6 +45,9 @@ namespace UniversityHelper.CommunityService.Data.Provider.MsSql.Ef.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Text")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

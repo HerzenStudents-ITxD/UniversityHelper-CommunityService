@@ -12,7 +12,7 @@ using UniversityHelper.CommunityService.Data.Provider.MsSql.Ef;
 namespace UniversityHelper.CommunityService.Data.Provider.MsSql.Ef.Migrations
 {
     [DbContext(typeof(CommunityServiceDbContext))]
-    [Migration("20250419112258_initial")]
+    [Migration("20250510211729_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -32,7 +32,6 @@ namespace UniversityHelper.CommunityService.Data.Provider.MsSql.Ef.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Avatar")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAtUtc")
@@ -49,6 +48,9 @@ namespace UniversityHelper.CommunityService.Data.Provider.MsSql.Ef.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Text")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

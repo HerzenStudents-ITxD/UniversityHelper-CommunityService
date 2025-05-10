@@ -15,7 +15,8 @@ public class DbCommunityNewsMapper : IDbCommunityNewsMapper
             Title = request.Title,
             Text = request.Content,
             AuthorId = userId,
-            Date = DateTime.UtcNow
+            Date = DateTime.UtcNow,
+            PointId = request.PointId // Добавлено маппинг для PointId
         };
     }
 }

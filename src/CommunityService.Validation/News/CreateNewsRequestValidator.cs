@@ -17,5 +17,6 @@ public class CreateNewsRequestValidator : AbstractValidator<CreateNewsRequest>, 
 
         RuleFor(x => x.Content)
           .NotEmpty().WithMessage("Content is required.");
+        // PointId необязательное, валидация не требуется
     }
 }

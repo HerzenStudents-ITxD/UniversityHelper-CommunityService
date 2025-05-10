@@ -12,4 +12,5 @@ public record CreateNewsRequest
     public string Content { get; set; }
     public List<string>? Images { get; set; }
     public string? Image { get; set; }
+    public Guid? PointId { get; set; }
 }
