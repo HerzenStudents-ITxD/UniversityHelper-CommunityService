@@ -11,4 +11,5 @@ public record CreateNewsRequest
     [Required]
     public string Content { get; set; }
     public List<string> Images { get; set; }
+    public string Image { get; set; }
 }
