@@ -56,14 +56,20 @@ public class CreateNewsCommand : ICreateNewsCommand
         var userId = _httpContextAccessor.HttpContext.GetUserId();
         if (!await _agentRepository.IsModeratorAsync(userId, request.CommunityId))
         {
-            return _responseCreator.CreateFailureResponse<Guid>(HttpStatusCode.Forbidden, new List<string> { "User is not a moderator." });
+            return _responseCreator.CreateFailureResponse<Guid>(HttpStatusCode.Forbidden, new List<string> { "Пользователь не является модератором." });
         }
 
         var news = _dbNewsMapper.Map(request, userId);
         await _newsRepository.CreateAsync(news);
 
-        OperationResultResponse<Guid> response = new() { Body = news.Id };
+        // Обработка изображения, если оно предоставлено
+        if (request.Image != null)
+        {
+            var image = _dbImageMapper.Map(request.Image, news.Id);
+            await _imageRepository.CreateAsync(image);
+        }
 
+        OperationResultResponse<Guid> response = new() { Body = news.Id };
 
         _httpContextAccessor.HttpContext.Response.StatusCode = (int)HttpStatusCode.Created;
         return response;
