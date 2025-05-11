@@ -29,6 +29,17 @@ public class CreateNewsCommand : ICreateNewsCommand
     private readonly IAccessValidator _accessValidator;
 
     public CreateNewsCommand(
+        ICommunityNewsRepository newsRepository,
+        ICommunityNewsPhotoRepository imageRepository,
+        ICommunityAgentRepository agentRepository,
+        ICreateNewsRequestValidator requestValidator,
+        IDbCommunityNewsMapper dbNewsMapper,
+        IDbCommunityNewsPhotoMapper dbImageMapper,
+        IHttpContextAccessor httpContextAccessor,
+        IResponseCreator responseCreator,
+        IDataProvider provider)
+
+    public CreateNewsCommand(
       ICommunityNewsRepository newsRepository,
       ICommunityNewsPhotoRepository imageRepository,
       ICommunityAgentRepository agentRepository,
