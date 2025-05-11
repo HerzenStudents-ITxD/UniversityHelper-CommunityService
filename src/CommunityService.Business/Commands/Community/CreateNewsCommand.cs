@@ -1,6 +1,7 @@
 ﻿using FluentValidation.Results;
 using UniversityHelper.Core.Helpers.Interfaces;
 using UniversityHelper.Core.Responses;
+using UniversityHelper.Core.BrokerSupport.AccessValidatorEngine.Interfaces;
 using UniversityHelper.CommunityService.Data.Interfaces;
 using UniversityHelper.CommunityService.Mappers.Db.Interfaces;
 using UniversityHelper.CommunityService.Models.Dto.Requests.News;
