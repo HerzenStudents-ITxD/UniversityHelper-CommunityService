@@ -7,8 +7,7 @@ namespace UniversityHelper.CommunityService.Data.Interfaces;
 [AutoInject]
 public interface ICommunityNewsRepository
 {
-    Task CreateAsync(DbNews news);
-    Task<(List<DbNews> news, int totalCount)> FindAsync(
-      int page, int pageSize, CancellationToken cancellationToken);
+    Task AddAsync(DbNews news); // Заменяем CreateAsync на AddAsync
+    Task<(List<DbNews> news, int totalCount)> FindAsync(int page, int pageSize, CancellationToken cancellationToken);
     Task<DbNews> GetAsync(Guid newsId, CancellationToken cancellationToken);
 }

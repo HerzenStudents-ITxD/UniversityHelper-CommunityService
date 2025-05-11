@@ -9,6 +9,6 @@ namespace UniversityHelper.CommunityService.Data.Interfaces;
 [AutoInject]
 public interface ICommunityNewsPhotoRepository
 {
-    Task CreateAsync(DbNewsPhoto image);
+    Task AddAsync(DbNewsPhoto image); // Заменяем CreateAsync на AddAsync
     Task<List<Guid>> GetImagesByNewsId(Guid newsId, CancellationToken cancellationToken);
 }

@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using System.Net;
 using System;
 using UniversityHelper.Core.Extensions;
+using UniversityHelper.CommunityService.Data.Provider;
 
 namespace UniversityHelper.CommunityService.Business.Commands.Community;
 
@@ -24,6 +25,7 @@ public class CreateNewsCommand : ICreateNewsCommand
     private readonly IDbCommunityNewsPhotoMapper _dbImageMapper;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IResponseCreator _responseCreator;
+    private readonly IDataProvider _provider;
     private readonly IAccessValidator _accessValidator;
 
     public CreateNewsCommand(
@@ -35,7 +37,8 @@ public class CreateNewsCommand : ICreateNewsCommand
       IDbCommunityNewsPhotoMapper dbImageMapper,
       IHttpContextAccessor httpContextAccessor,
       IAccessValidator accessValidator,
-      IResponseCreator responseCreator)
+      IResponseCreator responseCreator,
+      IDataProvider provider)
     {
         _newsRepository = newsRepository;
         _imageRepository = imageRepository;
@@ -46,6 +49,7 @@ public class CreateNewsCommand : ICreateNewsCommand
         _httpContextAccessor = httpContextAccessor;
         _accessValidator = accessValidator;
         _responseCreator = responseCreator;
+        _provider = provider;
     }
 
     public async Task<OperationResultResponse<Guid>> ExecuteAsync(CreateNewsRequest request)
@@ -54,8 +58,8 @@ public class CreateNewsCommand : ICreateNewsCommand
         if (!validationResult.IsValid)
         {
             return _responseCreator.CreateFailureResponse<Guid>(
-              HttpStatusCode.BadRequest,
-              validationResult.Errors.Select(v => v.ErrorMessage).ToList());
+                HttpStatusCode.BadRequest,
+                validationResult.Errors.Select(v => v.ErrorMessage).ToList());
         }
 
         var userId = _httpContextAccessor.HttpContext.GetUserId();
@@ -65,18 +69,21 @@ public class CreateNewsCommand : ICreateNewsCommand
         }
 
         var news = _dbNewsMapper.Map(request, userId);
-        await _newsRepository.CreateAsync(news);
+        await _newsRepository.AddAsync(news);
 
-        // Обработка изображения, если оно предоставлено
-        if (request.Image != null)
+        // Обработка списка изображений, если он предоставлен
+        if (request.Images != null && request.Images.Any())
         {
-            var image = _dbImageMapper.Map(request.Image, news.Id);
-            await _imageRepository.CreateAsync(image);
+            foreach (var photo in request.Images)
+            {
+                var image = _dbImageMapper.Map(photo, news.Id);
+                await _imageRepository.AddAsync(image);
+            }
         }
 
-        OperationResultResponse<Guid> response = new() { Body = news.Id };
+        await _provider.SaveAsync();
 
+        OperationResultResponse<Guid> response = new() { Body = news.Id };
         _httpContextAccessor.HttpContext.Response.StatusCode = (int)HttpStatusCode.Created;
         return response;
     }
-}

@@ -19,10 +19,9 @@ public class CommunityNewsRepository : ICommunityNewsRepository
         _provider = provider;
     }
 
-    public async Task CreateAsync(DbNews news)
+    public async Task AddAsync(DbNews news)
     {
-        await _provider.News.AddAsync(news);
-        await _provider.SaveAsync();
+        await _provider.News.AddAsync(news); // Добавляем, но не сохраняем
     }
 
     public async Task<(List<DbNews> news, int totalCount)> FindAsync(
