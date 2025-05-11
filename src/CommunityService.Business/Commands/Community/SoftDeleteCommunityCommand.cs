@@ -22,12 +22,14 @@ public class SoftDeleteCommunityCommand : ISoftDeleteCommunityCommand
       ICommunityRepository communityRepository,
       IHttpContextAccessor httpContextAccessor,
       IResponseCreator responseCreator,
+      IAccessValidator accessValidator,
       IGlobalCacheRepository globalCache)
     {
         _communityRepository = communityRepository;
         _httpContextAccessor = httpContextAccessor;
         _responseCreator = responseCreator;
         _globalCache = globalCache;
+        _accessValidator = accessValidator;
     }
 
     public async Task<OperationResultResponse<bool>> ExecuteAsync(Guid communityId)
