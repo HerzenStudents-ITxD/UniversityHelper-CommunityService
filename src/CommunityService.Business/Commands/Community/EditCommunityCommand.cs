@@ -18,18 +18,21 @@ public class EditCommunityCommand : IEditCommunityCommand
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IResponseCreator _responseCreator;
     private readonly IGlobalCacheRepository _globalCache;
+    private readonly IAccessValidator _accessValidator;
 
     public EditCommunityCommand(
       ICommunityRepository communityRepository,
       ICommunityAgentRepository agentRepository,
       IHttpContextAccessor httpContextAccessor,
       IResponseCreator responseCreator,
+      IAccessValidator accessValidator,
       IGlobalCacheRepository globalCache)
     {
         _communityRepository = communityRepository;
         _agentRepository = agentRepository;
         _httpContextAccessor = httpContextAccessor;
         _responseCreator = responseCreator;
+        _accessValidator = accessValidator;
         _globalCache = globalCache;
     }
 

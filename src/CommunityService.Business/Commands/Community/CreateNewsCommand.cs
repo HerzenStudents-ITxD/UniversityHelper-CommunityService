@@ -23,6 +23,7 @@ public class CreateNewsCommand : ICreateNewsCommand
     private readonly IDbCommunityNewsPhotoMapper _dbImageMapper;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IResponseCreator _responseCreator;
+    private readonly IAccessValidator _accessValidator;
 
     public CreateNewsCommand(
       ICommunityNewsRepository newsRepository,
@@ -32,6 +33,7 @@ public class CreateNewsCommand : ICreateNewsCommand
       IDbCommunityNewsMapper dbNewsMapper,
       IDbCommunityNewsPhotoMapper dbImageMapper,
       IHttpContextAccessor httpContextAccessor,
+      IAccessValidator accessValidator,
       IResponseCreator responseCreator)
     {
         _newsRepository = newsRepository;
@@ -41,6 +43,7 @@ public class CreateNewsCommand : ICreateNewsCommand
         _dbNewsMapper = dbNewsMapper;
         _dbImageMapper = dbImageMapper;
         _httpContextAccessor = httpContextAccessor;
+        _accessValidator = accessValidator;
         _responseCreator = responseCreator;
     }
 

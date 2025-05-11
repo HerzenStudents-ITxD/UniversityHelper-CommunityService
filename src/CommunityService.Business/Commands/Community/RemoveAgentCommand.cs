@@ -16,18 +16,21 @@ public class RemoveAgentCommand : IRemoveAgentCommand
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IGlobalCacheRepository _globalCache;
     private readonly IResponseCreator _responseCreator;
+    private readonly IAccessValidator _accessValidator;
 
     public RemoveAgentCommand(
       ICommunityAgentRepository agentRepository,
       ICommunityRepository communityRepository,
       IHttpContextAccessor httpContextAccessor,
       IGlobalCacheRepository globalCache,
+      IAccessValidator accessValidator,
       IResponseCreator responseCreator)
     {
         _agentRepository = agentRepository;
         _communityRepository = communityRepository;
         _httpContextAccessor = httpContextAccessor;
         _globalCache = globalCache;
+        _accessValidator = accessValidator;
         _responseCreator = responseCreator;
     }
 

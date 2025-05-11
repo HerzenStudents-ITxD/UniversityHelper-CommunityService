@@ -15,6 +15,7 @@ public class SoftDeleteCommunityCommand : ISoftDeleteCommunityCommand
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IResponseCreator _responseCreator;
     private readonly IGlobalCacheRepository _globalCache;
+    private readonly IAccessValidator _accessValidator;
 
     public SoftDeleteCommunityCommand(
       ICommunityRepository communityRepository,

@@ -18,17 +18,20 @@ public class AddAgentCommand : IAddAgentCommand
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IGlobalCacheRepository _globalCache;
     private readonly IResponseCreator _responseCreator;
+    private readonly IAccessValidator _accessValidator;
 
     public AddAgentCommand(
         ICommunityAgentRepository agentRepository,
         ICommunityRepository communityRepository,
         IHttpContextAccessor httpContextAccessor,
+        IAccessValidator accessValidator,
         IGlobalCacheRepository globalCache,
         IResponseCreator responseCreator)
     {
         _agentRepository = agentRepository;
         _communityRepository = communityRepository;
         _httpContextAccessor = httpContextAccessor;
+        _accessValidator = accessValidator;
         _globalCache = globalCache;
         _responseCreator = responseCreator;
     }

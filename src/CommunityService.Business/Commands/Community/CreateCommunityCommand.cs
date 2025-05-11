@@ -22,12 +22,14 @@ public class CreateCommunityCommand : ICreateCommunityCommand
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IResponseCreator _responseCreator;
     private readonly IGlobalCacheRepository _globalCache;
+    private readonly IAccessValidator _accessValidator;
 
     public CreateCommunityCommand(
       ICommunityRepository communityRepository,
       ICommunityAvatarRepository avatarRepository,
       ICreateCommunityRequestValidator requestValidator,
       IDbCommunityMapper dbCommunityMapper,
+      IAccessValidator accessValidator,
       IHttpContextAccessor httpContextAccessor,
       IResponseCreator responseCreator,
       IGlobalCacheRepository globalCache)
@@ -36,6 +38,7 @@ public class CreateCommunityCommand : ICreateCommunityCommand
         _avatarRepository = avatarRepository;
         _requestValidator = requestValidator;
         _dbCommunityMapper = dbCommunityMapper;
+        _accessValidator = accessValidator;
         _httpContextAccessor = httpContextAccessor;
         _responseCreator = responseCreator;
         _globalCache = globalCache;
