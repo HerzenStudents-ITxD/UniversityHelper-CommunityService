@@ -23,7 +23,6 @@ public class CheckCommunityAccessConsumer : IConsumer<ICheckCommunityAccessReque
 
     private async Task<object> CheckAccessAsync(ICheckCommunityAccessRequest request)
     {
-        return await _agentRepository.IsModeratorAsync(request.UserId, request.CommunityId) ||
-               await _agentRepository.IsAgentAsync(request.UserId, request.CommunityId);
+        return await _agentRepository.IsAgentAsync(request.UserId, request.CommunityId);
     }
 }
