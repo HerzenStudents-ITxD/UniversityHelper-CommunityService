@@ -87,3 +87,4 @@ public class CreateNewsCommand : ICreateNewsCommand
         _httpContextAccessor.HttpContext.Response.StatusCode = (int)HttpStatusCode.Created;
         return response;
     }
+}
