@@ -9,6 +9,7 @@ using UniversityHelper.CommunityService.Mappers.Db.Interfaces;
 using UniversityHelper.CommunityService.Models.Dto.Requests.Community;
 using UniversityHelper.CommunityService.Validation.Community.Interfaces;
 using Microsoft.AspNetCore.Http;
+using UniversityHelper.Core.Extensions;
 using System.Net;
 
 namespace UniversityHelper.CommunityService.Business.Commands.Community;
