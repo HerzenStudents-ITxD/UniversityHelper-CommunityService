@@ -19,10 +19,9 @@ public class CommunityNewsPhotoRepository : ICommunityNewsPhotoRepository
         _provider = provider;
     }
 
-    public async Task CreateAsync(DbNewsPhoto image)
+    public async Task AddAsync(DbNewsPhoto image)
     {
-        await _provider.NewsPhotos.AddAsync(image);
-        await _provider.SaveAsync();
+        await _provider.NewsPhotos.AddAsync(image); // Добавляем, но не сохраняем
     }
 
     public async Task<List<Guid>> GetImagesByNewsId(Guid newsId, CancellationToken cancellationToken)
