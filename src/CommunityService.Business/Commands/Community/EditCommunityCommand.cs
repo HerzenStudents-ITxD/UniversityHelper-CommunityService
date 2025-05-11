@@ -1,6 +1,7 @@
 ﻿using UniversityHelper.Core.Helpers.Interfaces;
 using UniversityHelper.Core.RedisSupport.Helpers.Interfaces;
 using UniversityHelper.Core.Responses;
+using UniversityHelper.Core.BrokerSupport.AccessValidatorEngine.Interfaces;
 using UniversityHelper.CommunityService.Business.Commands.Community.Interfaces;
 using UniversityHelper.CommunityService.Data.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -18,25 +19,28 @@ public class EditCommunityCommand : IEditCommunityCommand
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IResponseCreator _responseCreator;
     private readonly IGlobalCacheRepository _globalCache;
+    private readonly IAccessValidator _accessValidator;
 
     public EditCommunityCommand(
       ICommunityRepository communityRepository,
       ICommunityAgentRepository agentRepository,
       IHttpContextAccessor httpContextAccessor,
       IResponseCreator responseCreator,
+      IAccessValidator accessValidator,
       IGlobalCacheRepository globalCache)
     {
         _communityRepository = communityRepository;
         _agentRepository = agentRepository;
         _httpContextAccessor = httpContextAccessor;
         _responseCreator = responseCreator;
+        _accessValidator = accessValidator;
         _globalCache = globalCache;
     }
 
     public async Task<OperationResultResponse<bool>> ExecuteAsync(Guid communityId, JsonPatchDocument<EditCommunityRequest> request)
     {
         var userId = _httpContextAccessor.HttpContext.GetUserId();
-        if (!await _agentRepository.IsModeratorAsync(userId, communityId) && !await _agentRepository.IsAgentAsync(userId, communityId))
+        if (!await _accessValidator.IsAdminAsync() && !await _agentRepository.IsAgentAsync(userId, communityId))
         {
             return _responseCreator.CreateFailureResponse<bool>(HttpStatusCode.Forbidden);
         }

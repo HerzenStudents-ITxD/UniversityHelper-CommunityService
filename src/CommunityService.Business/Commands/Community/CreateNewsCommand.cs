@@ -1,6 +1,7 @@
 ﻿using FluentValidation.Results;
 using UniversityHelper.Core.Helpers.Interfaces;
 using UniversityHelper.Core.Responses;
+using UniversityHelper.Core.BrokerSupport.AccessValidatorEngine.Interfaces;
 using UniversityHelper.CommunityService.Data.Interfaces;
 using UniversityHelper.CommunityService.Mappers.Db.Interfaces;
 using UniversityHelper.CommunityService.Models.Dto.Requests.News;
@@ -24,6 +25,7 @@ public class CreateNewsCommand : ICreateNewsCommand
     private readonly IDbCommunityNewsPhotoMapper _dbImageMapper;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IResponseCreator _responseCreator;
+<<<<<<< HEAD
     private readonly IDataProvider _provider; // Добавляем IDataProvider
 
     public CreateNewsCommand(
@@ -36,6 +38,20 @@ public class CreateNewsCommand : ICreateNewsCommand
         IHttpContextAccessor httpContextAccessor,
         IResponseCreator responseCreator,
         IDataProvider provider) // Внедряем зависимость
+=======
+    private readonly IAccessValidator _accessValidator;
+
+    public CreateNewsCommand(
+      ICommunityNewsRepository newsRepository,
+      ICommunityNewsPhotoRepository imageRepository,
+      ICommunityAgentRepository agentRepository,
+      ICreateNewsRequestValidator requestValidator,
+      IDbCommunityNewsMapper dbNewsMapper,
+      IDbCommunityNewsPhotoMapper dbImageMapper,
+      IHttpContextAccessor httpContextAccessor,
+      IAccessValidator accessValidator,
+      IResponseCreator responseCreator)
+>>>>>>> 04ae0bc2afb29583a6695a9300db69c941ea7d56
     {
         _newsRepository = newsRepository;
         _imageRepository = imageRepository;
@@ -44,6 +60,7 @@ public class CreateNewsCommand : ICreateNewsCommand
         _dbNewsMapper = dbNewsMapper;
         _dbImageMapper = dbImageMapper;
         _httpContextAccessor = httpContextAccessor;
+        _accessValidator = accessValidator;
         _responseCreator = responseCreator;
         _provider = provider;
     }
@@ -59,11 +76,15 @@ public class CreateNewsCommand : ICreateNewsCommand
         }
 
         var userId = _httpContextAccessor.HttpContext.GetUserId();
-        if (!await _agentRepository.IsModeratorAsync(userId, request.CommunityId))
+        if (!await _accessValidator.IsAdminAsync() && !await _agentRepository.IsAgentAsync(userId, request.CommunityId))
         {
+<<<<<<< HEAD
             return _responseCreator.CreateFailureResponse<Guid>(
                 HttpStatusCode.Forbidden,
                 new List<string> { "Пользователь не является модератором." });
+=======
+            return _responseCreator.CreateFailureResponse<Guid>(HttpStatusCode.Forbidden, new List<string> { "User is not a agent or admin." });
+>>>>>>> 04ae0bc2afb29583a6695a9300db69c941ea7d56
         }
 
         var news = _dbNewsMapper.Map(request, userId);

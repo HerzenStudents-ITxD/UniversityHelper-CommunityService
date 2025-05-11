@@ -27,11 +27,6 @@ public class CommunityAgentRepository : ICommunityAgentRepository
         return await _provider.Agents.AnyAsync(a => a.AgentId == userId && a.CommunityId == communityId);
     }
 
-    public async Task<bool> IsModeratorAsync(Guid userId, Guid communityId)
-    {
-        return await _provider.Agents.AnyAsync(a => a.AgentId == userId && a.CommunityId == communityId);
-    }
-
     public async Task RemoveAgentAsync(Guid communityId, Guid userId)
     {
         var agent = await _provider.Agents.FirstOrDefaultAsync(a => a.AgentId == userId && a.CommunityId == communityId);

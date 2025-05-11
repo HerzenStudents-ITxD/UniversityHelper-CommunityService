@@ -3,6 +3,7 @@ using UniversityHelper.CommunityService.Data.Interfaces;
 using UniversityHelper.CommunityService.Models.Db;
 using UniversityHelper.CommunityService.Models.Dto.Requests.Community;
 using UniversityHelper.CommunityService.Business.Commands.Community.Interfaces;
+using UniversityHelper.Core.BrokerSupport.AccessValidatorEngine.Interfaces;
 using UniversityHelper.Core.RedisSupport.Helpers.Interfaces;
 using Microsoft.AspNetCore.Http;
 using System.Net;
@@ -18,17 +19,20 @@ public class AddAgentCommand : IAddAgentCommand
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IGlobalCacheRepository _globalCache;
     private readonly IResponseCreator _responseCreator;
+    private readonly IAccessValidator _accessValidator;
 
     public AddAgentCommand(
         ICommunityAgentRepository agentRepository,
         ICommunityRepository communityRepository,
         IHttpContextAccessor httpContextAccessor,
+        IAccessValidator accessValidator,
         IGlobalCacheRepository globalCache,
         IResponseCreator responseCreator)
     {
         _agentRepository = agentRepository;
         _communityRepository = communityRepository;
         _httpContextAccessor = httpContextAccessor;
+        _accessValidator = accessValidator;
         _globalCache = globalCache;
         _responseCreator = responseCreator;
     }
@@ -36,7 +40,7 @@ public class AddAgentCommand : IAddAgentCommand
     public async Task<OperationResultResponse<bool>> ExecuteAsync(AddAgentRequest request)
     {
         var userId = _httpContextAccessor.HttpContext.GetUserId();
-        if (!await _agentRepository.IsModeratorAsync(userId, request.CommunityId))
+        if (!await _agentRepository.IsAgentAsync(userId, request.CommunityId) && !await _accessValidator.IsAdminAsync())
         {
             return _responseCreator.CreateFailureResponse<bool>(HttpStatusCode.Forbidden, new List<string> { "User is not a moderator." });
         }
