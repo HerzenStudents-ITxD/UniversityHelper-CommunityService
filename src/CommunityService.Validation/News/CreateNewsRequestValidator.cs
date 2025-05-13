@@ -15,8 +15,8 @@ public class CreateNewsRequestValidator : AbstractValidator<CreateNewsRequest>, 
           .NotEmpty().WithMessage("Title is required.")
           .MaximumLength(200).WithMessage("Title is too long.");
 
-        RuleFor(x => x.Content)
-          .NotEmpty().WithMessage("Content is required.");
+        RuleFor(x => x.Text)
+          .NotEmpty().WithMessage("Text is required.");
         // PointId необязательное, валидация не требуется
     }
 }
