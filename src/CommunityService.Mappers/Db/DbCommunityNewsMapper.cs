@@ -13,10 +13,10 @@ public class DbCommunityNewsMapper : IDbCommunityNewsMapper
             Id = Guid.NewGuid(),
             CommunityId = request.CommunityId,
             Title = request.Title,
-            Text = request.Content,
+            Text = request.Text,
             AuthorId = userId,
             Date = DateTime.UtcNow,
-            PointId = request.PointId // Добавлено маппинг для PointId
+            PointId = request.PointId
         };
     }
 }

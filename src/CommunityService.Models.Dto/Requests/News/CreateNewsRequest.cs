@@ -9,7 +9,7 @@ public record CreateNewsRequest
     [Required]
     public string Title { get; set; }
     [Required]
-    public string Content { get; set; }
-    public List<string>? Images { get; set; } // Оставляем только Images
+    public string Text { get; set; }
+    public List<string>? Images { get; set; }
     public Guid? PointId { get; set; }
 }

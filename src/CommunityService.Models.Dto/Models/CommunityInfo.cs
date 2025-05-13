@@ -7,6 +7,6 @@ public record CommunityInfo
     public Guid Id { get; set; }
     public string Name { get; set; }
     public bool IsHidden { get; set; }
-    public string? Avatar { get; set; } // Nullable
-    public string? Text { get; set; } // Nullable
+    public string? Avatar { get; set; }
+    public string? Text { get; set; }
 }
