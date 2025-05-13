@@ -51,14 +51,24 @@ public class EditCommunityCommand : IEditCommunityCommand
             return _responseCreator.CreateFailureResponse<bool>(HttpStatusCode.NotFound);
         }
 
-        var editRequest = new EditCommunityRequest();
-        request.ApplyTo(editRequest);
+        // Create a new patch document for the DB model
+        var dbPatch = new JsonPatchDocument<Data.Models.Db.Community>();
+        
+        // Map operations from request to dbPatch
+        foreach (var op in request.Operations)
+        {
+            if (op.path.Equals(nameof(EditCommunityRequest.Name), StringComparison.OrdinalIgnoreCase))
+            {
+                dbPatch.Replace(c => c.Name, op.value as string);
+            }
+            // Add other properties as needed
+        }
+        
+        // Add the modified fields
+        dbPatch.Replace(c => c.ModifiedBy, userId);
+        dbPatch.Replace(c => c.ModifiedAtUtc, DateTime.UtcNow);
 
-        community.Name = editRequest.Name ?? community.Name;
-        community.ModifiedBy = userId;
-        community.ModifiedAtUtc = DateTime.UtcNow;
-
-        var success = await _communityRepository.UpdateAsync(community);
+        var success = await _communityRepository.UpdateAsync(communityId, dbPatch);
         if (success)
         {
             await _globalCache.RemoveAsync(communityId);
