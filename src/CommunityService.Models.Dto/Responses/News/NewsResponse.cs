@@ -12,4 +12,5 @@ public record NewsResponse
     public List<string> Photos { get; set; }
     public List<Guid> Participants { get; set; }
     public Guid? PointId { get; set; }
+    public DateTime Date { get; set; }
 }

@@ -65,4 +65,25 @@ public class NewsController : ControllerBase
     {
         return await command.ExecuteAsync(request);
     }
+
+    [HttpPatch("edit-news")]
+    [ProducesResponseType(typeof(OperationResultResponse<bool>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<OperationResultResponse<bool>> EditNewsAsync(
+        [FromServices] IEditNewsCommand command,
+        [FromQuery] Guid newsId,
+        [FromBody] JsonPatchDocument<EditNewsRequest> request)
+    {
+        return await command.ExecuteAsync(newsId, request);
+    }
+
+    [HttpDelete("delete-news")]
+    [ProducesResponseType(typeof(OperationResultResponse<bool>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<OperationResultResponse<bool>> DeleteNewsAsync(
+        [FromServices] IDeleteNewsCommand command,
+        [FromQuery] Guid newsId)
+    {
+        return await command.ExecuteAsync(newsId);
+    }
 }

@@ -16,7 +16,11 @@ public class DbCommunityNewsMapper : IDbCommunityNewsMapper
             Text = request.Text,
             AuthorId = userId,
             Date = DateTime.UtcNow,
-            PointId = request.PointId
+            PointId = request.PointId,
+            CreatedBy = userId,
+            CreatedAtUtc = DateTime.UtcNow,
+            ModifiedBy = userId,
+            ModifiedAtUtc = DateTime.UtcNow
         };
     }
 }

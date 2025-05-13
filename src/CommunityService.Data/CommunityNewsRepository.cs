@@ -48,4 +48,21 @@ public class CommunityNewsRepository : ICommunityNewsRepository
             .Include(n => n.Participatings)
             .FirstOrDefaultAsync(n => n.Id == newsId, cancellationToken);
     }
+
+    public async Task<bool> UpdateAsync(DbNews news)
+    {
+        _provider.News.Update(news);
+        await _provider.SaveAsync();
+        return true;
+    }
+
+    public async Task<bool> DeleteAsync(Guid newsId)
+    {
+        var news = await GetAsync(newsId, CancellationToken.None);
+        if (news == null)
+            return false;
+        _provider.News.Remove(news);
+        await _provider.SaveAsync();
+        return true;
+    }
 }

@@ -22,7 +22,8 @@ namespace UniversityHelper.CommunityService.Data.Provider.MsSql.Ef.Migrations
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedAtUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ModifiedAtUtc = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    ModifiedAtUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsHidden = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -77,7 +78,11 @@ namespace UniversityHelper.CommunityService.Data.Provider.MsSql.Ef.Migrations
                     Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AuthorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PointId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    CommunityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    CommunityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedAtUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ModifiedAtUtc = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {

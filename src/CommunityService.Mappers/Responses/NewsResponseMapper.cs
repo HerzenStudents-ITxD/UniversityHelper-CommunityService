@@ -17,7 +17,8 @@ public class NewsResponseMapper : INewsResponseMapper
             Text = news.Text,
             Photos = photos,
             Participants = news.Participatings?.Select(p => p.UserId).ToList() ?? new List<Guid>(),
-            PointId = news.PointId
+            PointId = news.PointId,
+            Date = news.Date
         };
     }
 }

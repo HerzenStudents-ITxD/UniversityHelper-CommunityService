@@ -21,6 +21,7 @@ public class DbCommunity
     public DateTime CreatedAtUtc { get; set; }
     public Guid ModifiedBy { get; set; }
     public DateTime ModifiedAtUtc { get; set; }
+    public bool IsHidden { get; set; }
 
     [IgnoreParse]
     public ICollection<DbCommunityAgent> Agents { get; set; }

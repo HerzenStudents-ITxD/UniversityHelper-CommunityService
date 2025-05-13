@@ -16,9 +16,13 @@ public class CommunityResponseMapper : ICommunityResponseMapper
             {
                 Id = community.Id,
                 Name = community.Name,
-                IsHidden = community.Hidden.Any(),
+                IsHidden = community.IsHidden,
                 Avatar = community.Avatar,
-                Text = community.Text
+                Text = community.Text,
+                CreatedBy = community.CreatedBy,
+                CreatedAtUtc = community.CreatedAtUtc,
+                ModifiedBy = community.ModifiedBy,
+                ModifiedAtUtc = community.ModifiedAtUtc
             },
             Agents = community.Agents?.Select(a => new CommunityAgentInfo
             {

@@ -37,6 +37,9 @@ namespace UniversityHelper.CommunityService.Data.Provider.MsSql.Ef.Migrations
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("IsHidden")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("ModifiedAtUtc")
                         .HasColumnType("datetime2");
 
@@ -105,8 +108,20 @@ namespace UniversityHelper.CommunityService.Data.Provider.MsSql.Ef.Migrations
                     b.Property<Guid>("CommunityId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("CreatedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ModifiedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("PointId")
                         .HasColumnType("uniqueidentifier");

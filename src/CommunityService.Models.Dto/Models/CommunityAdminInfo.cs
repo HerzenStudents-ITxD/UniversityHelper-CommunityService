@@ -6,12 +6,16 @@ using System.Threading.Tasks;
 
 namespace UniversityHelper.CommunityService.Models.Dto.Models;
 public record CommunityAdminInfo
-{    public Guid Id { get; set; }
+{
+    public Guid Id { get; set; }
     public string Name { get; set; }
     public string? Avatar { get; set; }
     public string Text { get; set; }
-
     public Guid AuthorId { get; set; }
     public Guid? PointId { get; set; }
     public List<CommunityAgentInfo> Agents { get; set; }
+    public Guid CreatedBy { get; set; }       
+    public DateTime CreatedAtUtc { get; set; } 
+    public Guid ModifiedBy { get; set; }      
+    public DateTime ModifiedAtUtc { get; set; } 
 }
