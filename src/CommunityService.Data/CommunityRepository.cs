@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +27,10 @@ public class CommunityRepository : ICommunityRepository
     }
 
     public async Task<(List<DbCommunity> communities, int totalCount)> FindAsync(
-        Guid? userId, bool includeAgents, bool includeAvatars, CancellationToken cancellationToken)
+        Guid? userId,
+        bool includeAgents,
+        bool includeAvatars,
+        CancellationToken cancellationToken)
     {
         var query = _provider.Communities.AsQueryable();
         if (userId.HasValue)
@@ -65,5 +69,43 @@ public class CommunityRepository : ICommunityRepository
         await _provider.SaveAsync();
         return true;
 
+    }
+    public async Task<bool> UpdateAsync(Guid communityId, Guid userId, JsonPatchDocument<DbCommunity> patch)
+    {
+        // Получаем сообщество из базы данных
+        DbCommunity dbCommunity = await _provider.Communities
+            .FirstOrDefaultAsync(x => x.Id == communityId);
+
+        // Проверяем валидность входных данных
+        if (patch is null || dbCommunity is null)
+        {
+            return false;
+        }
+
+        try
+        {
+            // Применяем изменения из patch
+            patch.ApplyTo(dbCommunity);
+
+            // Обновляем метаданные
+            dbCommunity.ModifiedBy = userId;
+            dbCommunity.ModifiedAtUtc = DateTime.UtcNow;
+
+            // Сохраняем изменения
+            await _provider.SaveAsync();
+
+            return true;
+        }
+        catch (Exception ex)
+        {
+            // Логирование ошибки при необходимости
+            //_logger.LogError(ex, "Error editing community with ID {CommunityId}", communityId);
+            return false;
+        }
+    }
+
+    public Task<bool> UpdateAsync(Guid communityId, JsonPatchDocument<DbCommunity> dbPatch)
+    {
+        throw new NotImplementedException();
     }
 }
