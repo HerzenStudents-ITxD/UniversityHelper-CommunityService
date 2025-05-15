@@ -1,5 +1,3 @@
-ARG APP_DLL=
-
 # Build Stage
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /app
