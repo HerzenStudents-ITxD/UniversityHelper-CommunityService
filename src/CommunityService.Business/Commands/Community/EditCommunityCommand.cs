@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.JsonPatch;
 using System.Net;
 using UniversityHelper.CommunityService.Models.Dto.Requests.Community;
 using UniversityHelper.Core.Extensions;
+using UniversityHelper.CommunityService.Models.Db;
 
 namespace UniversityHelper.CommunityService.Business.Commands.Community;
 
@@ -52,7 +53,7 @@ public class EditCommunityCommand : IEditCommunityCommand
         }
 
         // Create a new patch document for the DB model
-        var dbPatch = new JsonPatchDocument<Data.Models.Db.Community>();
+        var dbPatch = new JsonPatchDocument<DbCommunity>();
         
         // Map operations from request to dbPatch
         foreach (var op in request.Operations)
